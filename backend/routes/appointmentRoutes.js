@@ -1,21 +1,29 @@
-const express = require('express');
-const router = express.Router();
-const {
+import express from 'express';
+import {
   bookAppointment,
   getMyAppointments,
   getDoctorAppointments,
   getAllAppointments,
-} = require('../controllers/appointmentController');
-const { protect } = require('../middleware/authMiddleware');
+  updateAppointmentStatus,
+} from '../controllers/appointmentController.js';
+import { protect } from '../middleware/authMiddleware.js';
+import { admin, doctor } from '../middleware/roleMiddleware.js';
 
-// Patient routes
-router.post('/', protect, bookAppointment); // book an appointment
-router.get('/mine', protect, getMyAppointments); // view patient’s appointments
+const router = express.Router();
 
-// Doctor route
-router.get('/doctor', protect, getDoctorAppointments); // view doctor’s appointments
+// Patient books an appointment
+router.post('/', protect, bookAppointment);
 
-// Admin route
-router.get('/', protect, getAllAppointments); // admin only — in real case, check for admin role
+// Patient views their own appointments
+router.get('/mine', protect, getMyAppointments);
 
-module.exports = router;
+// Doctor views their appointments
+router.get('/doctor', protect, doctor, getDoctorAppointments);
+
+// Admin views all appointments
+router.get('/', protect, admin, getAllAppointments);
+
+// Doctor updates appointment status (accept/reject)
+router.put('/:id/status', protect, doctor, updateAppointmentStatus);
+
+export default router;

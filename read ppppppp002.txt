@@ -16,3 +16,18 @@ npm run dev
     curl -X GET http://localhost:5000/api/users/dashboard \
   -H "Authorization: Bearer <your_token_here>"
 }
+
+// register a doctor
+{
+  curl -X POST http://localhost:5000/api/users/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Dr. Taklu",
+    "email": "doctor@gmail.com",
+    "password": "doctor",
+    "role": "Doctor"
+  }'
+
+{"_id":"67f657a8e981011257576533","name":"Dr. Taklu","email":"doctor@gmail.com","role":"Doctor",
+"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZjY1N2E4ZTk4MTAxMTI1NzU3NjUzMyIsImlhdCI6MTc0NDE5NzU0NCwiZXhwIjoxNzQ2Nzg5NTQ0fQ.UCIK1U60UmN51yN46I-lIfjmS1x4oCM_K5jNA24NCQo"}
+}

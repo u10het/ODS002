@@ -1,13 +1,13 @@
-const User = require('../models/userModel');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
+import User from '../models/userModel.js';
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
 
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '30d' });
 };
 
 // @desc    Register a new user
-exports.registerUser = async (req, res) => {
+export const registerUser = async (req, res) => {
   const { name, email, password, role } = req.body;
 
   try {
@@ -30,7 +30,7 @@ exports.registerUser = async (req, res) => {
 };
 
 // @desc    Login user
-exports.loginUser = async (req, res) => {
+export const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
   try {
@@ -49,5 +49,36 @@ exports.loginUser = async (req, res) => {
     });
   } catch (err) {
     res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// @desc    Get all users with doctor role
+// @route   GET /api/users/doctors
+// @access  Private
+export const getDoctors = async (req, res) => {
+  try {
+    const doctors = await User.find({ role: /Doctor/i }).select('-password');
+    res.json(doctors);
+  } catch (error) {
+    console.error('Error fetching doctors:', error);
+    res.status(500).json({ message: 'Failed to fetch doctors' });
+  }
+};
+
+// @desc    Get a user by ID (doctor or patient)
+// @route   GET /api/users/:id
+// @access  Private
+export const getUserById = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id).select('-password'); // remove password
+
+    if (user) {
+      res.json(user);
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
+
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
