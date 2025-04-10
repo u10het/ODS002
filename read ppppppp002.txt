@@ -31,3 +31,5 @@ npm run dev
 {"_id":"67f657a8e981011257576533","name":"Dr. Taklu","email":"doctor@gmail.com","role":"Doctor",
 "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZjY1N2E4ZTk4MTAxMTI1NzU3NjUzMyIsImlhdCI6MTc0NDE5NzU0NCwiZXhwIjoxNzQ2Nzg5NTQ0fQ.UCIK1U60UmN51yN46I-lIfjmS1x4oCM_K5jNA24NCQo"}
 }
+
+sudo chown -R codespace:codespace /workspaces/ODS002
